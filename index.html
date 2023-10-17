@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+
+<!-- Custom fonts for this template-->
+<link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+<link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+<!--Chartjs CDN-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+</head>
+
+<body>
+    {% if user.is_superuser %}
+        <!-- Sidebar -->
+        <div class="w3-sidebar w3-bar-block w3-border-right" style="display:none;" id="mySidebar">
+        <button onclick="w3_close()" class="w3-bar-item w3-large">Close &times;</button>
+        <a href="{% url 'products:list1' %}" class="w3-bar-item w3-button">Products</a>
+
+        <a href="{% url 'doctors:doctorlist' %}" class="w3-bar-item w3-button">Doctors</a>
+
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">Appointment   <i class="fa fa-caret-down"></i></button>
+        <div id="demoAcc" class="w3-bar-block w3-hide w3-white w3-card-4">
+            <a href="{% url 'appointment_list' %}" class="w3-bar-item w3-button">Appointment List</a>
+            <a href="{% url 'schedule_appointment' %}" class="w3-bar-item w3-button">Schedule</a>
+            <a href="{% url 'search_list' %}" class="w3-bar-item w3-button">Todays Appointment</a>
+        </div>
+        <div class="w3-dropdown-click">
+            <button class="w3-button" onclick="myDropFunc()">Deals  <i class="fa fa-caret-down"></i></button>
+            <div id="demoDrop" class="w3-dropdown-content w3-bar-block w3-white w3-card-4">
+                <a href="{% url 'deal_list' %}" class="w3-bar-item w3-button">Deal List</a>
+                <a href="{% url 'product_deals'%}" class="w3-bar-item w3-button">Make A Deal</a>
+            </div>
+        </div>
+        <a href="{% url 'emplist' %}" class="w3-bar-item w3-button">List Of Employee</a>
+        <a href="{% url 'product_list' %}" class="w3-bar-item w3-button">Product-list</a>
+        <a href="{% url 'doctor_visits' %}" class="w3-bar-item w3-button">Doctor Visit</a>
+        <a href="{% url 'deals_done' %}" class="w3-bar-item w3-button">Deal Done</a>
+        <a href="{% url 'logout' %}" class="w3-bar-item w3-button"><span style="color:red">Logout</span></a>
+
+        
+        </div>
+         <!-- Page Content -->
+         <div class="w3-teal">
+            <button class="w3-button w3-teal w3-xlarge" onclick="w3_open()">☰</button>
+            <div class="w3-container" style="background-color: rgba(53, 122, 174, 0.82);">
+                <h1>Hello !, Welcome <p>{{ user.username }}</p>
+                </h1>
+            </div>
+        </div>
+    
+        <div class="row">
+    
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Products</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><h3>{{pc}}</h3></div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fa-solid fa-pills fa-2xl"></i>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Doctors Available</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><h3>{{dc}}</h3></div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fa-solid fa-stethoscope fa-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Appointment Scheduled
+                                </div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ac}}</div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fa-solid fa-calendar-check fa-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Total Employee</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><h3>{{us}}</h3></div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fa-solid fa-user fa-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <img src="{% static 'images/health.jpg' %}" alt="health" style="width:100%;" /> -->
+   
+        <!-- graphs -->
+        <div class="container">
+            <div class="row my-5">
+                <div class="col-md-6">
+                    <div class="bg-white">
+                        <canvas id="myChart1" width="400" height="300"></canvas>
+                        <script>
+                            var ctx = document.getElementById('myChart1').getContext('2d');
+                            var myChart1 = new Chart(ctx, {
+                                type: 'pie',
+                                data: {
+                                    labels: [{% for deal in deals %} '{{ deal.product_name }}', {% endfor %}],
+                                    datasets: [{
+                                        label: 'Products',
+                                        data: [{% for deal in deals %} '{{ deal.quantity_ordered }}', {% endfor %}],
+                                        backgroundColor: [
+                                            'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                            'rgba(255, 206, 86, 1)',
+                                            'rgba(75, 192, 192, 1)',
+                                            'rgba(153, 102, 255, 1)',
+                                            'rgba(25, 159, 64, 1)',
+                                            'rgba(255, 26, 86, 1)',
+                                            'rgba(7, 192, 192, 1)',
+                                            'rgba(15, 102, 255, 1)',
+                                            'rgba(25, 159, 64, 1)',
+                                        ],
+                                        borderColor: [
+                                            'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                            'rgba(255, 206, 86, 1)',
+                                            'rgba(75, 192, 192, 1)',
+                                            'rgba(153, 102, 255, 1)',
+                                            'rgba(255, 159, 64, 1)',
+                                            'rgba(25, 159, 64, 1)',
+                                            'rgba(255, 26, 86, 1)',
+                                            'rgba(7, 192, 192, 1)',
+                                            'rgba(15, 102, 255, 1)',
+                                            'rgba(25, 159, 64, 1)',
+                                        ],
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        yAxes: [{
+                                            ticks: {
+                                                beginAtZero: true
+                                            }
+                                        }]
+                                    }
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="bg-white">
+                        <canvas id="myChart" width="400" height="300"></canvas>
+                        <script>
+                            var ctx = document.getElementById('myChart').getContext('2d');
+                            var myChart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: [{% for result in results %} '{{ result.doc_name }}', {% endfor %}],
+                                    datasets: [{
+                                        label: 'Quantity Ordered',
+                                        data: [{% for result in results %} '{{ result.quantity_ordered }}', {% endfor %}],
+                                        backgroundColor: [
+                                            'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                            'rgba(255, 206, 86, 1)',
+                                            'rgba(75, 192, 192, 1)',
+                                            'rgba(153, 102, 255, 1)',
+                                            'rgba(255, 159, 64, 1)',
+                                            'rgba(15, 102, 255, 1)',
+                                            'rgba(25, 159, 64, 1)'
+                                        ],
+                                        borderColor: [
+                                            'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                            'rgba(255, 206, 86, 1)',
+                                            'rgba(75, 192, 192, 1)',
+                                            'rgba(153, 102, 255, 1)',
+                                            'rgba(255, 159, 64, 1)',
+                                            'rgba(15, 102, 255, 1)',
+                                            'rgba(25, 159, 64, 1)',
+                                        ],
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        yAxes: [{
+                                            ticks: {
+                                                beginAtZero: true
+                                            }
+                                        }]
+                                    }
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Graphs-->
+     
+
+
+
+    {% else %}
+        <div class="w3-sidebar w3-bar-block w3-border-right" style="display:none" id="mySidebar">
+        <button onclick="w3_close()" class="w3-bar-item w3-large">Close &times;</button>
+        <a href="{% url 'products:list1' %}" class="w3-bar-item w3-button">Products</a>
+
+        <a href="{% url 'doctors:doctorlist' %}" class="w3-bar-item w3-button">Doctors</a>
+
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">Appointment</button>
+        <div id="demoAcc" class="w3-bar-block w3-hide w3-white w3-card-4">
+            <a href="{% url 'appointment_list' %}" class="w3-bar-item w3-button">Appointment List </a>
+            <a href="{% url 'schedule_appointment' %}" class="w3-bar-item w3-button">Schedule</a>
+            <a href="{% url 'search_list' %}" class="w3-bar-item w3-button">Todays Appointment</a>
+        </div>
+        <div class="w3-dropdown-click">
+            <button class="w3-button" onclick="myDropFunc()">Deals</button>
+            <div id="demoDrop" class="w3-dropdown-content w3-bar-block w3-white w3-card-4">
+                <a href="{% url 'deal_list' %}" class="w3-bar-item w3-button">Deal List</a>
+                <a href="{% url 'product_deals'%}" class="w3-bar-item w3-button">Make A Deal</a>
+            </div>
+        </div>
+        
+        <a href="{% url 'logout' %}" class="w3-bar-item w3-button"><span style="color:red">Logout</span></a>
+
+        </div>
+         <!-- Page Content -->
+         <div class="w3-teal">
+            <button class="w3-button w3-teal w3-xlarge" onclick="w3_open()">☰</button>
+            <div class="w3-container" style="background-color: rgba(53, 122, 174, 0.82);">
+                <h1>Hello !, Welcome <p>{{ user.username }}</p>
+                </h1>
+            </div>
+        </div>
+    
+        <div class="row">
+    
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Products</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><h3>{{pc}}</h3></div>
+                            </div>
+                            <!-- <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Doctors Available</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><h3>{{dc}}</h3></div>
+                            </div>
+                            <!-- <div class="col-auto">
+                                <i class="fa-regular fa-user-doctor"></i>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Appointment Scheduled
+                                </div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ac}}</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="progress progress-sm mr-2">
+                                            <div class="progress-bar bg-info" role="progressbar"
+                                                style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                                aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-auto">
+                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Total Employee</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><h3>{{us}}</h3></div>
+                            </div>
+                            <!-- <div class="col-auto">
+                                <i class="fas fa-comments fa-2x text-gray-300"></i>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img src="{% static 'images/health.jpg' %}" alt="health" style="width:100%;" />
+
+    {% endif %}
+       
+    <script>
+        function w3_open() {
+            document.getElementById("mySidebar").style.display = "block";
+        }
+
+        function w3_close() {
+            document.getElementById("mySidebar").style.display = "none";
+        }
+
+        function myAccFunc() {
+            var x = document.getElementById("demoAcc");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-blue";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                    x.previousElementSibling.className.replace(" w3-blue", "");
+            }
+        }
+
+        function myDropFunc() {
+            var x = document.getElementById("demoDrop");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-blue";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                    x.previousElementSibling.className.replace(" w3-blue", "");
+            }
+        }
+    </script>
+
+
+
+</body>
+
+</html>
