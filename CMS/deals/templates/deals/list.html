@@ -1,0 +1,52 @@
+{% include 'base/header.html' %}
+    {% block content %}
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Deal List</title>
+        </head>
+        <body style="background-color: lightskyblue;">
+            {% if messages %}
+    {% for message in messages %}
+    
+    <div class="alert alert-success alert-dismissible fade show">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+        <strong>{{ message }}</strong>
+    </div>
+    {% endfor %}
+    {% endif %}
+            <h1>Deals List</h1>
+            <table class="table table-striped table-secondary">
+                <thead>
+                    <tr>
+                        <th>Doctor</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Date</th>
+                        <th>Entered By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for deal in deals %}
+                    <tr>
+                        <td>{{ deal.doc_name }}</td>
+                        <td>{{ deal.product_name }}</td>
+                        <td>{{ deal.quantity_ordered }}</td>
+                        <td>{{ deal.date }}</td>
+                        <td>{{ deal.entered_by }}</td>
+                    
+
+                    </tr>
+                    <td>
+                        <a href="{% url 'update_deal' deal.pk %}" class="btn btn-primary">Update</a>
+                        <a href="{% url 'delete_deal' deal.pk %}" class="btn btn-danger">Delete</a>
+                    </td>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </body>
+        </html>
+    {% endblock %} 
+{% include 'base/footer.html' %}

@@ -1,0 +1,36 @@
+{% include 'base/header.html' %}
+{% block content %}
+
+<body style="background-color:lightskyblue;">
+  <h1 style="margin-left:40%">Appointment Form</h1>
+  <form action="{% url 'schedule_appointment' %}" method="post" style="margin:0px 200px 0px 40%;">
+    {% csrf_token %}
+    <label for="doctor" class="form-lable">Doctor:</label>
+    <select id="doctor" name="doctor" class="form-select" required>
+      {% for doctor in doctors %}
+      <option value="{{ doctor.id }}">{{ doctor.name }}</option>
+      {% endfor %}
+    </select><br><br>
+
+    <label for="date" class="form-lable">Date of Schedule:</label>
+    <input type="date" id="date" name="date" min="{{ today }}" class="form-control" required><br><br>
+
+    <label for="time">Time of Schedule:</label>
+    <input type="time" id="time" name="time" class="form-control" required><br><br>
+
+    <label for="entered_by" class="form-lable">Entered By:</label>
+    <select id="entered_by" name="entered_by" class="form-select" required>
+      {% for user in users %}
+      <option value="{{ user.id }}">{{ user.username }}</option>
+      {% endfor %}
+    </select><br><br>
+
+    <input type="submit" value="Schedule Appointment" class="btn btn-primary">
+  </form>
+  <script>
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').setAttribute('min', today);
+  </script>
+</body>
+{% endblock %}
+{% include 'base/footer.html' %}

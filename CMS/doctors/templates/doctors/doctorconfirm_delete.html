@@ -1,0 +1,22 @@
+{% include 'base/header.html' %}
+{% block content %} 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirm Delete</title>
+</head>
+<body style="background-color: lightskyblue;">
+    <h1>Confirm Delete</h1>
+    <p>Are you sure you want to delete this data ?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirm</button>
+        <a href="{% url 'doctors:doctorlist' %}" class="btn btn-primary">Cancel</a>
+    </form>
+</body>
+</html>
+
+{% endblock %} 
+{% include 'base/footer.html' %} 
+
+

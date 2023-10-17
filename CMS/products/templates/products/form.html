@@ -1,0 +1,22 @@
+{% include 'base/header.html' %}
+{% block content %} 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Data</title>
+</head>
+<body style="background-color: rgb(90, 171, 243);">
+    <div style="background-color: lightskyblue; padding: 60px;">
+    <h1 style="margin-left:40%">Product Data</h1>
+    <form method="post" enctype="multipart/form-data" style="margin:0px 200px 0px 40%;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-info">Save</button>
+        <a href="{% url 'products:list1' %}" class="btn btn-primary">Back</a>
+    </form>
+    </div>
+</body>
+</html>
+{% endblock %} 
+{% include 'base/footer.html' %} 
+

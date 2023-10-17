@@ -1,0 +1,43 @@
+{% include 'base/header.html' %}
+    {% block content %}
+    <body style="background-color:lightskyblue;">
+  
+      <h1 style="margin-left:40%">Deal Form</h1>
+    <form action="{% url 'product_deals' %}" method="post" style="margin:0px 200px 0px 40%;">
+      {% csrf_token %}
+      <label for="doctor" class="form-lable">Doctor:</label>
+      <select id="doctor" name="doctor" class="form-select"required>
+        {% for doctor in doctors %}
+          <option value="{{ doctor.id }}">{{ doctor.name }}</option>
+        {% endfor %}
+      </select><br><br>
+
+      <label for="product" class="form-lable">Product Name:</label>
+      <select id="product" name="product" class="form-select"required>
+        {% for product in products %}
+          <option value="{{ product.id }}">{{ product.product_name }}</option>
+        {% endfor %}
+      </select><br><br>
+      
+      <label for="Quantity" class="form-lable">Qunatity:</label>
+      <input type="number" id="quantity" name="quantity" min="1" value="1" class="form-control"required><br><br>
+
+      <label for="date" class="form-lable">Date:</label>
+      <input type="date" id="date" name="date" min="{{ today }}" class="form-control"required><br><br>
+
+      <label for="entered_by" class="form-lable">Entered By:</label>
+      <select id="entered_by" name="entered_by" class="form-select"required>
+        {% for user in users %}
+          <option value="{{ user.id }}">{{ user.username }}</option>
+        {% endfor %}
+      </select><br><br>
+      
+      <input type="submit" value="Make a deal" class="btn btn-primary">
+    </form>
+    <script>
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('date').setAttribute('min', today);
+    </script>
+    </body>
+    {% endblock %} 
+{% include 'base/footer.html' %} 

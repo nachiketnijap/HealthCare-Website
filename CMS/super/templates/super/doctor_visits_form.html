@@ -1,0 +1,12 @@
+{% include 'base/header.html' %}
+{% block content %} 
+<body style="background-color:lightskyblue;">
+<h1 style="margin-left:40%">Doctor Visits</h1>
+<form method="post" action="{% url 'doctor_visits' %}" style="margin:0px 200px 0px 40%;">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</body>
+{% endblock %} 
+{% include 'base/footer.html' %} 

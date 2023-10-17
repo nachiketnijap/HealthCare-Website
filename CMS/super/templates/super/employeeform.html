@@ -1,0 +1,21 @@
+{% include 'base/header.html' %}
+{% block content %} 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Data</title>
+</head>
+<body style="background-color:lightskyblue;">
+    <h1 style="margin-left:40%">Employee Data</h1>
+    <form method="post" enctype="multipart/form-data" style="margin:0px 200px 0px 40%;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-info">Save</button>
+        <a href="{% url 'emplist' %}" class="btn btn-primary">Back</a>
+    </form>
+</body>
+</html>
+
+{% endblock %} 
+{% include 'base/footer.html' %} 
+

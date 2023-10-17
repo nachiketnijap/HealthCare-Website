@@ -1,0 +1,26 @@
+{% include 'base/header.html' %}
+{% block content %}
+    {% if object %}
+    <body style="background-color: lightskyblue;">
+    <div class="container" >
+        <h4 style="text-align:center; margin-top:20px; margin-bottom: 20px;">Today's Appointment</h4>
+        <div class="row">
+            {% for obj in object %}
+            <div class="col-lg-3">
+                <div class="card" style="min-height:200px; cursor:pointer;">
+                    <div class="card-body" >
+                        <p>Doctor: {{ obj.doctor.name }}</a></p>
+                        <p>Date: {{ obj.date }}</p>
+                        <p>Time: {{ obj.time }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    </body>
+    {% else %}
+    <h4>No such appointments</h4>
+    {% endif %}
+{% endblock %}
+{% include 'base/footer.html' %}
